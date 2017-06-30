@@ -1,8 +1,7 @@
 function getUsers() {
 	$.ajax({
-		method : 'POST',
-		url : 'controller/UsersController.php',
-		data : { action : 'getUsers' },
+		method : 'GET',
+		url : 'http://restapi/api/users',
 		dataType : 'json',
 		success : function( data ) {
 			var context = {};
