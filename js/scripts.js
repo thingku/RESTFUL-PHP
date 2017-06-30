@@ -5,15 +5,18 @@ function getUsers() {
 		data : { action : 'getUsers' },
 		dataType : 'json',
 		success : function( data ) {
-			var template = '';
-			var result = data.filter( function( value, index ) {
-				template += '<tr data-id="'+value.id+'">';
-				template += '<td><p>'+ value.firstname + ' ' + value.lastname +'</p></td>';
-				template += '<td><a href="editUser.php?userID='+value.id+'" class="btn btn-primary">Edit</a> <button class=" deleteBtn btn btn-danger" id="'+value.id+'" >Delete</button></td>';
-				template += '</tr>';
-				return template;
+			var context = {};
+			context.users = data;			
+			var source = $('#usersTemplate').html();
+			var template = Handlebars.compile(source);
+			Handlebars.registerHelper( 'fullName', function(firstname, lastname) {
+				return firstname + ' ' + lastname;
 			});
-			$('#usersList').html(template);
+			Handlebars.registerHelper('link', function(id) {
+			  return id;
+			});			
+			var domHTML = template(context);
+			$('#usersList').html(domHTML);
 			deleteUser();
 		}
 	});
